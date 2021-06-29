@@ -1,4 +1,5 @@
 var fs = require('fs');
+const searchfile = require('./searchfile');
 const ora = require('ora');
 var path = require("path");
 const { Command } = require('commander');
@@ -15,14 +16,15 @@ if (Object.keys(options).length > 0) {
 
     fs.stat(_workpath, (err, st) => {
         if (!err && st.isDirectory()) {
-            fs.readdir(_workpath, (err, files) => {
-                files.forEach((file) => {
-                    spinner.text = `讀取中...${file}`;
-                    spinner.render();
-                    //console.log(file);
-                })
-                spinner.succeed("完成");
-            });
+            searchfile.statdir(_workpath);
+            // fs.readdir(_workpath, (err, files) => {
+            //     files.forEach((file) => {
+            //         spinner.text = `讀取中...${file}`;
+            //         spinner.render();
+            //         //console.log(file);
+            //     })
+            //     spinner.succeed("完成");
+            // });
         }
         else if (!err && st.isFile()) {
             spinner.fail("錯誤：[path]需為一個目錄位置。");
