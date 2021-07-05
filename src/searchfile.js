@@ -21,7 +21,6 @@ module.exports = {
                 info.push(...this.statdir(objpath));
             }
         })
-        debugger;
         return info;
     }
 }
