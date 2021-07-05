@@ -54,13 +54,6 @@ if (Object.keys(options).length > 0) {
         }
     });
 
-
-    // fs.readdir(__dirname, function (err, files) {
-    //     files.forEach(function (file) {
-    //         debugger;
-    //         console.log(path.join(__dirname, file));
-    //     });
-    // });
 }
 else {
     program.outputHelp();
