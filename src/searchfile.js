@@ -11,15 +11,17 @@ module.exports = {
                 let ext = path.extname(obj);
                 let find = info[0].info.find(d => d.name == ext);
                 if (find == undefined) {
-                    info[0].info.push({ name: ext, count: 1 });
+                    info[0].info.push({ name: ext, count: 1, size: fstate.size });
                 } else {
                     find.count++;
+                    find.size += fstate.size;
                 }
             }
             else if (fstate.isDirectory()) {
                 info.push(...this.statdir(objpath));
             }
         })
+        debugger;
         return info;
     }
 }

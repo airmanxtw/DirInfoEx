@@ -13,7 +13,6 @@ const options = program.opts();
 if (Object.keys(options).length > 0) {
     let _workpath = options.dir == true ? __dirname : options.dir;
     const spinner = ora('讀取中...').start();
-
     fs.stat(_workpath, (err, st) => {
         if (!err && st.isDirectory()) {
             searchfile.statdir(_workpath);
