@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 var fs = require('fs');
 const ExcelJS = require('exceljs');
 const prettyBytes = require('pretty-bytes');
@@ -7,7 +8,7 @@ var path = require("path");
 const { Command } = require('commander');
 const program = new Command();
 program.version('1.0.0')
-    .option("-d,--dir [path]", "查詢目錄位置")
+    .option("-d,--dir [path]", "查詢目錄位置 Directory path")
     .description("**×目錄資訊ToExcel***")
     .parse(program.argv);
 
@@ -19,12 +20,12 @@ if (Object.keys(options).length > 0) {
         if (!err && st.isDirectory()) {
             let result = searchfile.statdir(_workpath);
             const workbook = new ExcelJS.Workbook();
-            const sheet = workbook.addWorksheet('檔案資訊');
+            const sheet = workbook.addWorksheet('檔案資訊(info)');
             sheet.columns = [
-                { header: '路徑', key: 'path', width: 50 },
-                { header: '副檔名', key: 'ext', width: 10 },
-                { header: '次數', key: 'count', width: 15 },
-                { header: '合計大小', key: 'total', width: 20, style: { alignment: { horizontal: 'right' } } }
+                { header: '路徑(path)', key: 'path', width: 50 },
+                { header: '副檔名(ext)', key: 'ext', width: 10 },
+                { header: '次數(count)', key: 'count', width: 15 },
+                { header: '合計大小(total)', key: 'total', width: 20, style: { alignment: { horizontal: 'right' } } }
             ];
 
             result.forEach((p) => {
@@ -40,14 +41,15 @@ if (Object.keys(options).length > 0) {
                 })
             });
 
-            workbook.xlsx.writeFile("result.xlsx").then((res) => {
-                spinner.succeed("檔案寫入成功！");
+            let outfile = "result.xlsx";
+            workbook.xlsx.writeFile(outfile).then((res) => {
+                spinner.succeed(`${outfile} File export completed`);
             });
 
 
         }
         else if (!err && st.isFile()) {
-            spinner.fail("錯誤：[path]需為一個目錄位置。");
+            spinner.fail("錯誤(error)：[path]需為一個目錄位置。");
         }
         else {
             spinner.fail(err.message);
