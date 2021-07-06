@@ -7,7 +7,8 @@ const ora = require('ora');
 var path = require("path");
 const { Command } = require('commander');
 const program = new Command();
-program.version('1.0.0')
+
+program.version('1.0.8')
     .option("-d,--dir [path]", "查詢目錄位置 Directory path")
     .description("**×目錄資訊ToExcel***")
     .parse(program.argv);
@@ -18,18 +19,19 @@ if (Object.keys(options).length > 0) {
     const spinner = ora('讀取中...').start();
     fs.stat(_workpath, (err, st) => {
         if (!err && st.isDirectory()) {
-            let result = searchfile.statdir(_workpath);
+            let result = searchfile.statdir(_workpath, spinner);
             const workbook = new ExcelJS.Workbook();
             const sheet = workbook.addWorksheet('檔案資訊(info)');
             sheet.columns = [
-                { header: '路徑(path)', key: 'path', width: 50 },
-                { header: '副檔名(ext)', key: 'ext', width: 10 },
+                { header: '路徑(path)', key: 'path', width: 70 },
+                { header: '副檔名(ext)', key: 'ext', width: 15 },
                 { header: '次數(count)', key: 'count', width: 15 },
                 { header: '合計大小(total)', key: 'total', width: 20, style: { alignment: { horizontal: 'right' } } }
             ];
 
             result.forEach((p) => {
                 let index = 0;
+                spinner.text = `寫入：${p.path}`
                 p.info.forEach((i) => {
                     index++;
                     sheet.addRow({
